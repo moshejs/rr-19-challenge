@@ -77,7 +77,7 @@
             },
             "hmr": {
               "hmr": true,
-              "browserTarget": "<project-name>:build:hmr"
+              "browserTarget": "project-dashboard:build:hmr"
             }
           }
         },
