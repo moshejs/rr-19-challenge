@@ -1,8 +1,5 @@
 import { NgModuleRef, ApplicationRef } from '@angular/core';
-
 import { createNewHosts } from '@angularclass/hmr';
-
-import { NgModuleRef, ApplicationRef } from '@angular/core';
 
 export const hmrBootstrap = (
   module: any,
