@@ -1,0 +1,55 @@
+<td *ngIf="!editState.title; else editTitle">
+  {{ record.title }}
+  <button (click)="toggleEditMode('title')">EDIT</button>
+</td>
+<ng-template #editTitle>
+  <td>
+    <input /> 
+    <button (click)="toggleEditMode('title')">SAVE</button>
+  </td>
+</ng-template>
+
+<td>{{ record.division }}</td>
+
+<td *ngIf="!editState.division; else editOwner">
+    {{ record.project_owner }}
+    <button (click)="toggleEditMode('project_owner')">EDIT</button>
+  </td>
+  <ng-template #editOwner>
+    <td>
+      <input /> 
+      <button (click)="toggleEditMode('project_owner')">SAVE</button>
+    </td>
+  </ng-template>
+
+
+<td *ngIf="!editState.budget; else editBudget">
+  {{ record.budget | currency}}
+  <button (click)="toggleEditMode('budget')">EDIT</button>
+</td>
+<ng-template #editBudget>
+  <td>
+    <input /> 
+    <button (click)="toggleEditMode('budget')">SAVE</button>
+  </td>
+</ng-template>
+
+
+<td *ngIf="!editState.status; else editStatus">
+  {{ record.status | uppercase }}
+  <button (click)="toggleEditMode('status')">EDIT</button>
+</td>
+<ng-template #editStatus>
+  <td>
+    <input /> 
+    <button (click)="toggleEditMode('status')">SAVE</button>
+  </td>
+</ng-template>
+
+<td>
+  {{ record.created }}
+</td>
+
+<td> 
+  {{ record.modified }}
+</td>
