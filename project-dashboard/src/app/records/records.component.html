@@ -1,0 +1,23 @@
+<table>
+  <thead>
+    <tr>
+      <th>Title <button>FILTER</button></th>
+      <th>Division <button>FILTER</button></th>
+      <th>Project Owner <button>FILTER</button></th>
+      <th>Budget <button>FILTER</button></th>
+      <th>Status <button>FILTER</button></th>
+      <th>Created <button>FILTER</button></th>
+      <th>Modified <button>FILTER</button></th>
+    </tr>
+  
+  </thead>
+  <tbody>
+      <tr app-record-row *ngFor="let record of records" [record]="record" [names]="ownerNames"></tr>
+  </tbody>
+  <tfoot>
+    <button (click)='addRecord()'>+ New Record</button>
+    <button (click)="export('PDF')">PDF Export</button>
+    <button (click)="export('XLSX')">Excel Export</button>
+
+  </tfoot>
+</table>
