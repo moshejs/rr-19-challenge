@@ -1,23 +1,80 @@
 <table>
   <thead>
     <tr>
-      <th>Title <button>FILTER</button></th>
-      <th>Division <button>FILTER</button></th>
-      <th>Project Owner <button>FILTER</button></th>
-      <th>Budget <button>FILTER</button></th>
-      <th>Status <button>FILTER</button></th>
+      <th>
+        <span>Title</span> 
+    
+        <div [hidden]="!show.title">
+          <!-- <mat-form-field>
+            <input />
+          </mat-form-field> -->
+        </div>
+        <button mat-button *ngIf="!show.title" (click)="toggleFilter('title')"><mat-icon>filter_list</mat-icon></button>
+
+
+      </th>
+      <th>
+        <span>Division</span> 
+        
+          <div [hidden]="!show.division">
+              <mat-form-field>
+                <mat-select multiple #divisionFilter (openedChange)="toggleFilter('division', $event);">
+                  <mat-option *ngFor="let division of divisions" [value]="division">
+                    {{ division }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <button mat-button *ngIf="!show.division" (click)="toggleFilter('division'); divisionFilter.open()"><mat-icon>filter_list</mat-icon></button>
+      </th>
+      <th>
+        <span>Project Owner </span>
+          <div [hidden]="!show.project_owner">
+              <mat-form-field>
+                <mat-select multiple #project_ownerFilter (openedChange)="toggleFilter('project_owner', $event);">
+                    <mat-option></mat-option> <!-- Empty field to fix overflow problem-->
+
+                  <mat-option *ngFor="let owner of ownerNames" [value]="owner">
+                    {{ owner }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <button mat-button *ngIf="!show.project_owner" (click)="toggleFilter('project_owner'); project_ownerFilter.open()"><mat-icon>filter_list</mat-icon></button>
+    
+      </th>
+      <th>
+        <span>Budget</span>
+      </th>
+      <th>
+        <span>Status</span>
+          <div [hidden]="!show.status">
+              <mat-form-field>
+                <mat-select multiple #statusFilter [(value)]="filters.status" (openedChange)="toggleFilter('status', $event);">
+        
+                  <mat-option *ngFor="let status of statuses" [value]="status">
+                    {{ status }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <button mat-button *ngIf="!show.status" (click)="toggleFilter('status'); statusFilter.open()"><mat-icon>filter_list</mat-icon></button>
+    
+      </th>
       <th>Created <button>FILTER</button></th>
       <th>Modified <button>FILTER</button></th>
     </tr>
   
   </thead>
   <tbody>
-      <tr app-record-row *ngFor="let record of records" [record]="record" [names]="ownerNames"></tr>
+      <tr app-record-row *ngFor="let record of filteredRecords; let i = index" [record]="record" [names]="ownerNames" [statuses]="statuses" [id]="i">
+        <app-edit-dropdown-cell class="project_owner" [key]="'project_owner'" [value]="record.project_owner" [options]="ownerNames" [index]="i" (valueChange)="updateData($event)"></app-edit-dropdown-cell>
+        <app-edit-dropdown-cell class="status" [key]="'status'" [value]="record.status" [options]="statuses" [index]="i" (valueChange)="updateData($event)"></app-edit-dropdown-cell>
+      </tr>
   </tbody>
   <tfoot>
     <button (click)='addRecord()'>+ New Record</button>
     <button (click)="export('PDF')">PDF Export</button>
     <button (click)="export('XLSX')">Excel Export</button>
-
   </tfoot>
 </table>

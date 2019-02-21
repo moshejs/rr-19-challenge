@@ -1,0 +1,20 @@
+.indicator {
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    &-working {
+        background-color: green;
+    }
+    &-new {
+        background-color: yellow;
+    }
+    &-delivered {
+        background-color: blue;
+    }
+    &-archived {
+        background-color: grey;
+    }
+  }
+ 

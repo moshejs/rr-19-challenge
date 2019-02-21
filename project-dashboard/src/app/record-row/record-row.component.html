@@ -1,50 +1,35 @@
 <td *ngIf="!editState.title; else editTitle">
+  <span class="indicator indicator-{{record.status}}"></span>
   {{ record.title }}
-  <button (click)="toggleEditMode('title')">EDIT</button>
+  <button mat-button class="icon" (click)="toggleEditMode('title')">
+    <mat-icon>edit_pencil</mat-icon>
+    </button>
 </td>
 <ng-template #editTitle>
   <td>
-    <input /> 
-    <button (click)="toggleEditMode('title')">SAVE</button>
+    <!-- <input />  -->
+    <button mat-button class="icon" (click)="toggleEditMode('title')"><mat-icon>save_file</mat-icon></button>
   </td>
 </ng-template>
 
 <td>{{ record.division }}</td>
 
-<td *ngIf="!editState.division; else editOwner">
-    {{ record.project_owner }}
-    <button (click)="toggleEditMode('project_owner')">EDIT</button>
-  </td>
-  <ng-template #editOwner>
-    <td>
-      <input /> 
-      <button (click)="toggleEditMode('project_owner')">SAVE</button>
-    </td>
-  </ng-template>
-
+<ng-content select=".project_owner"></ng-content>
 
 <td *ngIf="!editState.budget; else editBudget">
   {{ record.budget | currency}}
-  <button (click)="toggleEditMode('budget')">EDIT</button>
+  <button mat-button class="icon" (click)="toggleEditMode('budget')"><mat-icon>edit_pencil</mat-icon></button>
 </td>
 <ng-template #editBudget>
   <td>
     <input /> 
-    <button (click)="toggleEditMode('budget')">SAVE</button>
+    <button mat-button class="icon" (click)="toggleEditMode('budget')"><mat-icon>save_file</mat-icon></button>
   </td>
 </ng-template>
 
 
-<td *ngIf="!editState.status; else editStatus">
-  {{ record.status | uppercase }}
-  <button (click)="toggleEditMode('status')">EDIT</button>
-</td>
-<ng-template #editStatus>
-  <td>
-    <input /> 
-    <button (click)="toggleEditMode('status')">SAVE</button>
-  </td>
-</ng-template>
+<ng-content select=".status"></ng-content>
+
 
 <td>
   {{ record.created }}
@@ -52,4 +37,8 @@
 
 <td> 
   {{ record.modified }}
+</td>
+
+<td>
+  <button mat-button color="primary"><mat-icon>more</mat-icon></button>
 </td>

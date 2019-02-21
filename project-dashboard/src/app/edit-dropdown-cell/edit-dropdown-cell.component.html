@@ -1,0 +1,16 @@
+<td *ngIf="!isEditing; else editable">
+  {{ value }}
+  <button mat-button class="icon" (click)="toggleEditMode()"><mat-icon>edit_pencil</mat-icon></button>
+</td>
+<ng-template #editable>
+  <td>
+    <mat-form-field>
+      <mat-select [(value)]="value">
+        <mat-option *ngFor="let option of options" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-button class="icon" (click)="toggleEditMode(); emitChange()"><mat-icon>save_file</mat-icon></button>
+  </td>
+</ng-template>
