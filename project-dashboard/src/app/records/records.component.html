@@ -1,80 +1,153 @@
-<table>
-  <thead>
-    <tr>
-      <th>
-        <span>Title</span> 
-    
-        <div [hidden]="!show.title">
-          <!-- <mat-form-field>
-            <input />
-          </mat-form-field> -->
-        </div>
-        <button mat-button *ngIf="!show.title" (click)="toggleFilter('title')"><mat-icon>filter_list</mat-icon></button>
+<button mat-button color="primary" (click)="resetFilters()"><mat-icon>settings_backup_restore</mat-icon> Reset All Filters</button>
+<button mat-button color="primary" (click)='addRecord()'><mat-icon>add</mat-icon>  New Record</button>
+<button color="accent" mat-button (click)="export('PDF')"> <mat-icon>cloud_download</mat-icon> PDF Export</button>
+<button color="accent"  mat-button (click)="export('XLSX')"><mat-icon>cloud_download</mat-icon> Excel Export</button>
+<div class="table-container">
+    <table fxFlex>
+        <thead>
+            <tr>
+                <th>
+                    <div fxLayout="row" fxLayoutAlign="start baseline">
+                            <span fxFlex>Title</span>
+                            <button fxFlex mat-icon-button color="primary" *ngIf="!show.title" (click)="toggleFilter('title')"><mat-icon>filter_list</mat-icon></button>
+                    </div>
+                    
+                    <div [hidden]="!show.title">
+                            <mat-form-field>
+                                    <input matInput type="text" placeholder="Search..." [(ngModel)]="this.filters.title">
+                            </mat-form-field>
+                            <button mat-icon-button color="primary" (click)="toggleFilter('title')"><mat-icon>check</mat-icon></button>
+                    </div>
+                </th>
+                <th>
+                    <div fxLayout="row" fxLayoutAlign="start baseline">
+                        <span fxFlex>Division</span>
+                        <button fxFlex mat-icon-button color="primary" *ngIf="!show.division" (click)="toggleFilter('division'); divisionFilter.open()"><mat-icon>filter_list</mat-icon></button>
+                    </div>
 
+                    <div [hidden]="!show.division">
+                        <mat-form-field>
+                            <mat-select multiple #divisionFilter [(value)]="filters.division" (openedChange)="toggleFilter('division', $event);">
+                                <mat-option *ngFor="let division of divisions" [value]="division">
+                                    {{ division }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </th>
+                <th>
+                    <div fxLayout="row" fxLayoutAlign="start baseline">
+                        <span fxFlex="80%">Project Owner </span>
+                        <button fxFlex mat-icon-button color="primary" *ngIf="!show.project_owner" (click)="toggleFilter('project_owner'); project_ownerFilter.open()"><mat-icon>filter_list</mat-icon></button>
 
-      </th>
-      <th>
-        <span>Division</span> 
-        
-          <div [hidden]="!show.division">
-              <mat-form-field>
-                <mat-select multiple #divisionFilter (openedChange)="toggleFilter('division', $event);">
-                  <mat-option *ngFor="let division of divisions" [value]="division">
-                    {{ division }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <button mat-button *ngIf="!show.division" (click)="toggleFilter('division'); divisionFilter.open()"><mat-icon>filter_list</mat-icon></button>
-      </th>
-      <th>
-        <span>Project Owner </span>
-          <div [hidden]="!show.project_owner">
-              <mat-form-field>
-                <mat-select multiple #project_ownerFilter (openedChange)="toggleFilter('project_owner', $event);">
-                    <mat-option></mat-option> <!-- Empty field to fix overflow problem-->
+                    </div>
+                    <!-- I have attempted to make this a more generalized component, but with the lack of time,
+                          setting up ngRx was out of the question, given enough time, 
+                          a central data store would have made the state a lot easier to work with.
+                    -->
+                    <div [hidden]="!show.project_owner">
+                        <mat-form-field>
+                            <mat-select multiple #project_ownerFilter  [(value)]="filters.project_owner"  (openedChange)="toggleFilter('project_owner', $event);">
+                                <mat-option></mat-option>
+                                <!-- Empty field to fix overflow problem-->
 
-                  <mat-option *ngFor="let owner of ownerNames" [value]="owner">
-                    {{ owner }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <button mat-button *ngIf="!show.project_owner" (click)="toggleFilter('project_owner'); project_ownerFilter.open()"><mat-icon>filter_list</mat-icon></button>
-    
-      </th>
-      <th>
-        <span>Budget</span>
-      </th>
-      <th>
-        <span>Status</span>
-          <div [hidden]="!show.status">
-              <mat-form-field>
-                <mat-select multiple #statusFilter [(value)]="filters.status" (openedChange)="toggleFilter('status', $event);">
-        
-                  <mat-option *ngFor="let status of statuses" [value]="status">
-                    {{ status }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <button mat-button *ngIf="!show.status" (click)="toggleFilter('status'); statusFilter.open()"><mat-icon>filter_list</mat-icon></button>
-    
-      </th>
-      <th>Created <button>FILTER</button></th>
-      <th>Modified <button>FILTER</button></th>
-    </tr>
-  
-  </thead>
-  <tbody>
-      <tr app-record-row *ngFor="let record of filteredRecords; let i = index" [record]="record" [names]="ownerNames" [statuses]="statuses" [id]="i">
-        <app-edit-dropdown-cell class="project_owner" [key]="'project_owner'" [value]="record.project_owner" [options]="ownerNames" [index]="i" (valueChange)="updateData($event)"></app-edit-dropdown-cell>
-        <app-edit-dropdown-cell class="status" [key]="'status'" [value]="record.status" [options]="statuses" [index]="i" (valueChange)="updateData($event)"></app-edit-dropdown-cell>
-      </tr>
-  </tbody>
-  <tfoot>
-    <button (click)='addRecord()'>+ New Record</button>
-    <button (click)="export('PDF')">PDF Export</button>
-    <button (click)="export('XLSX')">Excel Export</button>
-  </tfoot>
-</table>
+                                <mat-option *ngFor="let owner of ownerNames" [value]="owner">
+                                    {{ owner }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                </th>
+                <th>
+                    <div fxLayout="row" fxLayoutAlign="start baseline">
+                        <span fxFlex>Budget</span>
+                        <button fxFlex mat-icon-button color="primary" *ngIf="!show.budget" (click)="toggleFilter('budget')"><mat-icon>filter_list</mat-icon></button>
+                    </div>
+
+                    <div [hidden]="!show.budget">
+                         <div fxLayout="row">
+                                <mat-form-field>
+                                        <input matInput type="number" placeholder="From" [(ngModel)]="this.filters.budget.from">
+                                </mat-form-field>
+                                <mat-form-field>
+                                        <input matInput type="number"  placeholder="To" [(ngModel)]="this.filters.budget.to">
+                                </mat-form-field>
+                                <button mat-icon-button color="primary" (click)="toggleFilter('budget')"><mat-icon>check</mat-icon></button>
+
+                         </div>
+
+                    </div>
+
+                </th>
+                <th>
+                    <div fxLayout="row" fxLayoutAlign="start baseline">
+                        <span fxFlex>Status</span>
+                        <button fxFlex mat-icon-button color="primary" *ngIf="!show.status" (click)="toggleFilter('status'); statusFilter.open()"><mat-icon>filter_list</mat-icon></button>
+                    </div>
+                    <div [hidden]="!show.status">
+                        <mat-form-field>
+                            <mat-select multiple #statusFilter [(value)]="filters.status" (openedChange)="toggleFilter('status', $event);">
+                                <mat-option *ngFor="let status of statuses" [value]="status">
+                                    {{ status }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                </th>
+                <th>                  
+                    <div fxLayout="row" fxLayoutAlign="start baseline">
+                        <span fxFlex>Created</span>
+                        <button fxFlex mat-icon-button color="primary" *ngIf="!show.creationDate" (click)="toggleFilter('creationDate')"><mat-icon>filter_list</mat-icon></button>
+                    </div>
+
+                    <div [hidden]="!show.creationDate">
+                        <div fxLayout="row">
+                            <mat-form-field>
+                                    <input matInput [matDatepicker]="createdFromPicker" [(ngModel)]="filters.creationDate.from" placeholder="From">
+                                    <mat-datepicker-toggle matSuffix [for]="createdFromPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #createdFromPicker></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field>
+                                        <input matInput [matDatepicker]="toPicker" [(ngModel)]="filters.creationDate.to" placeholder="To">
+                                        <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #toPicker></mat-datepicker>
+                                </mat-form-field>
+                                <button mat-icon-button color="primary" (click)="toggleFilter('creationDate')"><mat-icon>check</mat-icon></button>
+                        </div>
+                    </div>
+                </th>
+                <th>
+                    <div fxLayout="row" fxLayoutAlign="start baseline">
+                        <span fxFlex>Modified</span> 
+                        <button fxFlex mat-icon-button color="primary" *ngIf="!show.modifiedDate" (click)="toggleFilter('modifiedDate')"><mat-icon>filter_list</mat-icon></button>
+                    </div>
+                    <div [hidden]="!show.modifiedDate">
+                        <div fxLayout="row">
+                            <mat-form-field>
+                                    <input matInput [matDatepicker]="modifiedFromPicker" [(ngModel)]="filters.modifiedDate.from" placeholder="From">
+                                    <mat-datepicker-toggle matSuffix [for]="modifiedFromPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #modifiedFromPicker></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field>
+                                        <input matInput [matDatepicker]="modifiedToPicker" [(ngModel)]="filters.modifiedDate.to" placeholder="To">
+                                        <mat-datepicker-toggle matSuffix [for]="modifiedToPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #modifiedToPicker></mat-datepicker>
+                                </mat-form-field>
+                                <button mat-icon-button color="primary" (click)="toggleFilter('modifiedDate')"><mat-icon>check</mat-icon></button>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr app-record-row *ngFor="let record of filteredRecords; let i = index" [record]="record" [names]="ownerNames" [statuses]="statuses" [id]="i" (valueChange)="updateData($event)">
+                <app-edit-dropdown-cell class="project_owner" [key]="'project_owner'" [value]="record.project_owner" [options]="ownerNames" [index]="i" (valueChange)="updateData($event)"></app-edit-dropdown-cell>
+                <app-edit-dropdown-cell class="status" [key]="'status'" [value]="record.status" [options]="statuses" [index]="i" (valueChange)="updateData($event)"></app-edit-dropdown-cell>
+            </tr>
+        </tbody>
+
+    </table>
+</div>

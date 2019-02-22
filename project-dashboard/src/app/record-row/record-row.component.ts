@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Record } from '../../models/record.model';
 @Component({
   selector: 'app-record-row, [app-record-row]',
@@ -10,6 +10,7 @@ export class RecordRowComponent implements OnInit {
   @Input() names: string[];
   @Input() statuses: string[];
   @Input() id: number;
+  @Output() public valueChange: EventEmitter<any> = new EventEmitter();
 
 
   private editState = {
@@ -24,8 +25,16 @@ export class RecordRowComponent implements OnInit {
   ngOnInit() {
   }
 
-  toggleEditMode(prop) {
+  toggleEditMode(prop: string) {
     this.editState[prop] = !this.editState[prop];
+  }
+
+  emitChange(key: string, e: any) {
+    this.valueChange.emit({
+      key: key,
+      value: e.value,
+      index: this.id
+    });
   }
 
 }
