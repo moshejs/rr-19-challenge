@@ -1,0 +1,12 @@
+<div class="statistics-container" fxLayout="row" fxLayoutAlign="space-between center" *ngIf="budgetData.length > 0 && statusDistribution.length > 0">
+
+      <div class="chart-container"> 
+          <ngx-charts-pie-chart [view]="[300, 300]" [legend]="false"  [labels]="true" [results]="statusDistribution" [scheme]="'vivid'">
+            </ngx-charts-pie-chart>
+      </div>
+
+        <div class="chart-container">
+            <ngx-charts-advanced-pie-chart [view]="[800, 200]" [results]="budgetData" [valueFormatting]="toDollars" [label]="'Total Budget'" [scheme]="'vivid'">
+              </ngx-charts-advanced-pie-chart>
+        </div>
+</div>
