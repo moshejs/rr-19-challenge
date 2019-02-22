@@ -1,3 +1,6 @@
-<h1> Welcome to {{ title }}</h1>
-<app-records [records]="records$ | async">
-</app-records>
+<div class="main-container" fxLayout="column" fxLayoutAlign="center center">
+    <h1 fxFlex="5%" class="mat-display-1"> Welcome to {{ title }}</h1>
+    <app-statistics fxFlex="15%"  [records$]="records$"></app-statistics>
+    <app-records  fxFlex="70%"  [records]="records$ | async" [filteredRecords]="records$ | async">
+    </app-records>
+</div>

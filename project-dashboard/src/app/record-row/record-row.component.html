@@ -1,15 +1,19 @@
 <td *ngIf="!editState.title; else editTitle">
-  <span class="indicator indicator-{{record.status}}"></span>
-  {{ record.title }}
-  <button mat-button class="icon" (click)="toggleEditMode('title')">
-    <mat-icon>edit_pencil</mat-icon>
-    </button>
+    <div fxLayout="row" fxLayoutAlign="start baseline">
+        <span fxFlex class="indicator indicator-{{record.status}}"></span> 
+        <span fxFlex="75%">{{ record.title }}</span>
+        <button mat-icon-button color="accent" (click)="toggleEditMode('title')">
+        <mat-icon>edit_pencil</mat-icon>
+        </button>
+    </div>
 </td>
 <ng-template #editTitle>
-  <td>
-    <!-- <input />  -->
-    <button mat-button class="icon" (click)="toggleEditMode('title')"><mat-icon>save_file</mat-icon></button>
-  </td>
+    <td>
+        <mat-form-field>
+                <input matInput type="text" [(ngModel)]="record.title" (valueChange)="emitChange('title', record.title)">
+        </mat-form-field>
+        <button mat-icon-button color="accent" (click)="toggleEditMode('title')"><mat-icon>save_file</mat-icon></button>
+    </td>
 </ng-template>
 
 <td>{{ record.division }}</td>
@@ -17,14 +21,18 @@
 <ng-content select=".project_owner"></ng-content>
 
 <td *ngIf="!editState.budget; else editBudget">
-  {{ record.budget | currency}}
-  <button mat-button class="icon" (click)="toggleEditMode('budget')"><mat-icon>edit_pencil</mat-icon></button>
+    <div fxLayout="row" fxLayoutAlign="start baseline">
+        <span fxFlex>{{ record.budget | currency}}</span>
+        <button fxFlex mat-icon-button color="accent" (click)="toggleEditMode('budget')"><mat-icon>edit_pencil</mat-icon></button>
+    </div>
 </td>
 <ng-template #editBudget>
-  <td>
-    <input /> 
-    <button mat-button class="icon" (click)="toggleEditMode('budget')"><mat-icon>save_file</mat-icon></button>
-  </td>
+    <td>
+            <mat-form-field>
+                    <input matInput type="text" [(ngModel)]="record.budget" (valueChange)="emitChange('budget', record.budget)">
+            </mat-form-field>
+        <button mat-icon-button color="accent" (click)="toggleEditMode('budget')"><mat-icon>save_file</mat-icon></button>
+    </td>
 </ng-template>
 
 
@@ -32,13 +40,13 @@
 
 
 <td>
-  {{ record.created }}
-</td>
-
-<td> 
-  {{ record.modified }}
+    {{ record.created }}
 </td>
 
 <td>
-  <button mat-button color="primary"><mat-icon>more</mat-icon></button>
+    {{ record.modified | date:'MM/dd/yy' }}
+</td>
+
+<td>
+    <button mat-icon-button color="primary"><mat-icon>more</mat-icon></button>
 </td>
